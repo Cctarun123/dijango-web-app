@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - My Django App{% endblock %}
+
+{% block content %}
+<div class="jumbotron py-5 text-center">
+    <h1 class="display-4">Welcome to My Django App!</h1>
+    <p class="lead">A simple blog application built with Django</p>
+    <hr class="my-4">
+    <p>Explore our blog posts and join the conversation.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'blog:post-list' %}" role="button">View Blog Posts</a>
+    <a class="btn btn-secondary btn-lg" href="/admin/" role="button">Admin Panel</a>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Easy to Use</h5>
+                <p class="card-text">Simple and intuitive interface for managing blog posts.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Fast Performance</h5>
+                <p class="card-text">Built with Django for reliable and scalable performance.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Community Driven</h5>
+                <p class="card-text">Engage with readers through comments on posts.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

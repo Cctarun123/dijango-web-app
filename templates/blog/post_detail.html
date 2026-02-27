@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - My Django App{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <article>
+            <h1>{{ post.title }}</h1>
+            <p class="text-muted">
+                By <strong>{{ post.author.get_full_name|default:post.author.username }}</strong>
+                on <em>{{ post.created_at|date:"F d, Y \a\t H:i" }}</em>
+                {% if post.updated_at != post.created_at %}
+                (Updated: {{ post.updated_at|date:"F d, Y" }})
+                {% endif %}
+            </p>
+            <hr>
+            <div class="post-content mb-4">
+                {{ post.content|linebreaks }}
+            </div>
+        </article>
+
+        <!-- Comments Section -->
+        <div class="comments-section mt-5">
+            <h3>Comments ({{ post.comments.count }})</h3>
+            
+            {% if post.comments.all %}
+                {% for comment in post.comments.all %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">{{ comment.author }}</h6>
+                        <p class="card-text">{{ comment.content|linebreaks }}</p>
+                        <small class="text-muted">{{ comment.created_at|date:"F d, Y \a\t H:i" }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No comments yet. Be the first to comment!</p>
+            {% endif %}
+
+            <!-- Add Comment Form -->
+            <hr class="my-4">
+            <h4>Leave a Comment</h4>
+            <form method="post" action="{% url 'blog:add-comment' post.pk %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.author }}
+                </div>
+                <div class="mb-3">
+                    {{ form.content }}
+                </div>
+                <button type="submit" class="btn btn-primary">Post Comment</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Post Info</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Author:</strong> {{ post.author.get_full_name|default:post.author.username }}</p>
+                <p><strong>Created:</strong> {{ post.created_at|date:"F d, Y" }}</p>
+                <p><strong>Status:</strong> 
+                    {% if post.published %}
+                    <span class="badge bg-success">Published</span>
+                    {% else %}
+                    <span class="badge bg-warning">Draft</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <a href="{% url 'blog:post-list' %}" class="btn btn-secondary w-100 mt-3">Back to Posts</a>
+    </div>
+</div>
+{% endblock %}
